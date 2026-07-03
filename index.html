@@ -12,19 +12,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --blue-deep: #0F3B5E;
-  --blue-clinical: #1D6FA3;
-  --teal: #2A9D8F;
-  --coral: #E76F51;
-  --bg: #FEFCF9;
-  --surface: #FFFFFF;
-  --text: #1B2A3A;
-  --muted: #6B7D8E;
-  --border: #E8E3DE;
+  --blue-deep: #5B9BD5;
+  --blue-clinical: #8BB8E0;
+  --teal: #5BC0BE;
+  --coral: #FF6B5B;
+  --bg: #08080C;
+  --surface: #111116;
+  --surface-alt: #18181D;
+  --text: #F0F0F3;
+  --muted: #888899;
+  --border: #22222A;
   --radius: 12px;
-  --shadow-sm: 0 1px 3px rgba(15,59,94,0.06);
-  --shadow-md: 0 4px 16px rgba(15,59,94,0.08);
-  --shadow-lg: 0 12px 40px rgba(15,59,94,0.12);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -73,11 +74,11 @@ h3 { font-size: 1.25rem; font-weight: 600; }
 .btn-primary:hover { background: #D96445; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(231,111,81,0.45); }
 
 .btn-outline {
-  background: var(--surface);
-  color: var(--blue-deep);
-  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid rgba(255,255,255,0.2);
 }
-.btn-outline:hover { border-color: var(--blue-deep); background: #F8F6F2; }
+.btn-outline:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.05); }
 
 .btn-white {
   background: #fff;
@@ -89,8 +90,8 @@ h3 { font-size: 1.25rem; font-weight: 600; }
 /* Nav */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(254,252,249,0.92);
-  backdrop-filter: blur(12px);
+  background: rgba(8,8,12,0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   padding: 1rem 0;
 }
@@ -103,74 +104,53 @@ nav .container { display: flex; justify-content: space-between; align-items: cen
 
 /* Hero */
 .hero {
-  padding: 0;
-  position: relative;
+  position: relative; min-height: 100vh;
+  display: flex; align-items: flex-end;
   overflow: hidden;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
+  background: var(--bg);
 }
 .hero .container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
-  position: relative; z-index: 2;
-  padding: 8rem 2rem 4rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
+  position: relative; z-index: 3;
+  padding: 6rem 2rem 6rem;
+  max-width: 1200px; margin: 0 auto; width: 100%;
 }
-.hero-content { max-width: 560px; }
+.hero-content {
+  max-width: 680px;
+  background: rgba(8,8,12,0.7);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px; padding: 3rem;
+  border: 1px solid rgba(255,255,255,0.08);
+}
 .hero-visual {
-  position: absolute;
-  right: 0; top: 0; bottom: 0;
-  width: 55%;
-  z-index: 1;
-  overflow: hidden;
+  position: absolute; inset: 0; z-index: 1; overflow: hidden;
 }
 .hero-visual iframe {
-  width: 120%;
-  height: 130%;
-  margin-left: -10%;
-  margin-top: -5%;
-  border: none;
+  width: 110%; height: 115%;
+  margin: -3% 0 0 -5%;
+  border: none; pointer-events: none; opacity: 0.85;
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(to top, rgba(8,8,12,0.95) 0%, rgba(8,8,12,0.3) 40%, rgba(8,8,12,0.15) 70%, transparent 100%);
   pointer-events: none;
 }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  background: rgba(42,157,143,0.1);
-  color: var(--teal);
+  background: rgba(91,155,213,0.15);
+  color: var(--blue-deep);
   font-size: 0.8125rem; font-weight: 600;
-  padding: 0.5rem 1rem; border-radius: 9999px;
-  margin-bottom: 1.5rem;
+  padding: 0.5rem 1rem; border-radius: 9999px; margin-bottom: 1.5rem;
 }
-.hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); animation: pulse 2s infinite; }
+.hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue-deep); animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-.hero h1 { margin-bottom: 1.25rem; color: var(--blue-deep); }
-.hero h1 span { color: var(--teal); font-style: italic; }
-.hero p { color: var(--muted); font-size: 1.125rem; line-height: 1.7; margin-bottom: 2rem; max-width: 440px; }
+.hero h1 { margin-bottom: 1.25rem; color: var(--text); }
+.hero h1 span { color: var(--blue-deep); font-style: normal; }
+.hero p { color: var(--muted); font-size: 1.125rem; line-height: 1.7; margin-bottom: 2rem; max-width: 480px; }
 .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
 .hero-note { font-size: 0.8125rem; color: var(--muted); margin-top: 0.75rem; }
 
-.hero-visual {
-  position: absolute;
-  right: 0; top: 0; bottom: 0;
-  width: 55%;
-  z-index: 1;
-}
-.hero-visual iframe {
-  width: 120%;
-  height: 130%;
-  margin-left: -10%;
-  margin-top: -5%;
-  border: none;
-  pointer-events: none;
-}
-
 /* Problem */
-.problem { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.problem { background: var(--surface-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .problem .container { max-width: 900px; text-align: center; }
 .problem h2 { color: var(--blue-deep); margin-bottom: 1.5rem; }
 .problem p { color: var(--muted); font-size: 1.125rem; line-height: 1.7; }
@@ -238,6 +218,8 @@ nav .container { display: flex; justify-content: space-between; align-items: cen
 
 /* Pricing */
 .pricing { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.pricing h2, .features h2, .how h2, .faq h2, .cta-section h2 { color: var(--text); }
+.features > .container > p, .how > .container > p, .pricing > .container > p { color: var(--muted); }
 .pricing h2 { text-align: center; color: var(--blue-deep); margin-bottom: 1rem; }
 .pricing > .container > p { text-align: center; color: var(--muted); margin-bottom: 3rem; }
 .price-card {
@@ -310,7 +292,7 @@ footer a:hover { text-decoration: underline; }
 .reveal-delay-5 { animation-delay: 0.5s; }
 .reveal-delay-6 { animation-delay: 0.6s; }
 
-.nav-scrolled { background: rgba(254,252,249,0.98); box-shadow: 0 1px 12px rgba(15,59,94,0.06); }
+.nav-scrolled { background: rgba(8,8,12,0.98); box-shadow: 0 1px 12px rgba(0,0,0,0.4); }
 
 
 .chat-msg { opacity: 0; transform: translateY(12px); }
@@ -333,7 +315,7 @@ footer a:hover { text-decoration: underline; }
 /* Email toast */
 #email-toast {
   position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(120px);
-  background: var(--blue-deep); color: #fff;
+  background: var(--surface); color: var(--text);
   padding: 1rem 2rem;
   border-radius: 9999px;
   font-size: 0.9375rem;
@@ -353,9 +335,11 @@ footer a:hover { text-decoration: underline; }
 }
 
 @media (max-width: 768px) {
-  .hero .container { grid-template-columns: 1fr; gap: 3rem; }
-  .hero-visual { position: relative; width: 100%; height: 50vh; min-height: 320px; }
-  .hero-visual iframe { width: 120%; height: 140%; margin-left: -10%; margin-top: -15%; }
+  .hero .container { padding: 4rem 1.5rem 3rem; }
+  .hero-content { padding: 2rem; }
+  .hero-content h1 { font-size: 2.2rem; }
+  .hero-visual { min-height: 100vh; }
+  .hero-visual iframe { width: 130%; height: 130%; margin: -10% 0 0 -15%; }
   .steps, .features-grid, .math-block { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   .hero-content { text-align: center; }
@@ -385,8 +369,8 @@ footer a:hover { text-decoration: underline; }
   <div class="container">
     <div class="hero-content">
       <div class="hero-badge"><span class="dot"></span> Serving dental practices nationwide</div>
-      <h1>Your practice is unreachable <span>133 hours</span> every week.</h1>
-      <p>Dental practices answer calls 35 hours a week. The other 133 hours, patients hear voicemail — and call your competitor instead. Our AI receptionist answers every call, books appointments, and sounds completely human.</p>
+      <h1>The future of <span>patient care</span></h1>
+      <p>133 hours a week, your practice sits silent while patients call. Our AI receptionist answers every call, books every appointment, and never clocks out — because your patients deserve more than voicemail.</p>
       <div class="hero-actions">
         <a href="#" class="btn btn-primary" onclick="showEmail(event)">Get a Free Demo →</a>
         <a href="#how" class="btn btn-outline">See How It Works</a>
