@@ -105,14 +105,15 @@ nav .container { display: flex; justify-content: space-between; align-items: cen
 /* Hero */
 .hero {
   position: relative; min-height: 100vh;
-  display: flex; align-items: flex-end;
+  display: flex; align-items: center;
   overflow: hidden;
   background: var(--bg);
 }
 .hero .container {
   position: relative; z-index: 3;
-  padding: 6rem 2rem 6rem;
+  padding: 6rem 2rem 2rem;
   max-width: 1200px; margin: 0 auto; width: 100%;
+  transform: translateY(-8vh);
 }
 .hero-content {
   max-width: 680px;
@@ -370,12 +371,10 @@ footer a:hover { text-decoration: underline; }
     <div class="hero-content">
       <div class="hero-badge"><span class="dot"></span> Serving dental practices nationwide</div>
       <h1>The future of <span>patient care</span></h1>
-      <p>133 hours a week, your practice sits silent while patients call. Our AI receptionist answers every call, books every appointment, and never clocks out — because your patients deserve more than voicemail.</p>
       <div class="hero-actions">
         <a href="#" class="btn btn-primary" onclick="showEmail(event)">Get a Free Demo →</a>
         <a href="#how" class="btn btn-outline">See How It Works</a>
       </div>
-      <p class="hero-note">No contract. 30-day satisfaction guarantee.</p>
     </div>
     <div class="hero-visual">
       <iframe src="https://my.spline.design/nexbotrobotcharacterconcept-wfW5S99pqyMKcbcNU3jPWCoY/"
