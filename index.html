@@ -118,10 +118,11 @@ footer a:hover{text-decoration:underline}
 #email-toast strong{color:var(--accent);font-weight:600}
 
 /* Scroll animations */
-.reveal{opacity:0;transform:translateY(40px)}
-.reveal.visible{}
-.reveal-d1{transition-delay:0.1s}.reveal-d2{transition-delay:0.2s}.reveal-d3{transition-delay:0.3s}
-.reveal-d4{transition-delay:0.4s}.reveal-d5{transition-delay:0.5s}.reveal-d6{transition-delay:0.6s}
+.reveal{opacity:0;transform:translateY(60px);will-change:transform,opacity}
+
+/* Parallax hero robot */
+.hero-robot{will-change:transform}
+
 
 @media(max-width:768px){.steps,.features-grid,.math-grid{grid-template-columns:1fr}.section{padding:4rem 0}.hero-content h1{font-size:2rem}.hero-content{transform:translateY(-3vh)}}
 
@@ -293,8 +294,83 @@ footer a:hover{text-decoration:underline}
 </footer>
 
 <script>
-// Scroll animations — anime.js
-(function(){const o=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){const t=e.target;anime({targets:t,opacity:[0,1],translateY:[40,0],duration:700,easing:'easeOutCubic',delay:anime.stagger(0,'start')});o.unobserve(t)}})},{threshold:0.15});document.querySelectorAll('.reveal').forEach(el=>o.observe(el))})();
+// === Immersive Scroll Animation System ===
+(function(){
+  const robot = document.querySelector('.hero-robot');
+  const reveals = [...document.querySelectorAll('.reveal')];
+  const statEls = [...document.querySelectorAll('.math-item .big')];
+  let statAnimated = false;
+
+  // Pre-calculate reveal element positions
+  const revealData = reveals.map(el => ({el, top:0, animated:false}));
+
+  function updatePositions(){
+    revealData.forEach(d => {d.top = d.el.getBoundingClientRect().top + window.scrollY});
+  }
+  updatePositions();
+
+  function handleScroll(){
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
+
+    // Parallax: robot moves slower than scroll
+    if(robot){
+      const heroH = document.querySelector('.hero').offsetHeight;
+      const heroProgress = Math.min(scrollY / heroH, 1);
+      robot.style.transform = `translateY(${scrollY * 0.35}px) scale(${1 + heroProgress * 0.05})`;
+    }
+
+    // Reveal elements: animate when 85% into viewport
+    revealData.forEach(d => {
+      if(d.animated) return;
+      const progress = (scrollY + vh - d.top) / vh;
+      if(progress > 0.15){
+        d.animated = true;
+        const staggerIndex = reveals.indexOf(d.el);
+        const baseDelay = staggerIndex * 80;
+        // Parent section stagger
+        const parent = d.el.closest('.math-item, .step, .feat, .tech-card, .price-card, .faq-item');
+        const siblings = parent ? [...parent.parentElement.children].indexOf(parent) : 0;
+        const delay = baseDelay + siblings * 60;
+
+        anime({
+          targets: d.el,
+          opacity: [0,1],
+          translateY: [60,0],
+          duration: 800,
+          delay: Math.min(delay, 800),
+          easing: 'easeOutCubic',
+          complete: () => { d.el.style.transform = ''; d.el.style.opacity = ''; }
+        });
+      }
+    });
+
+    // Animate stats when math section enters view
+    if(!statAnimated){
+      const mathSection = document.querySelector('.math');
+      if(mathSection){
+        const mathTop = mathSection.getBoundingClientRect().top;
+        if(mathTop < vh * 0.6){
+          statAnimated = true;
+          statEls.forEach((el, i) => {
+            const text = el.textContent.replace(/[^0-9.]/g,'');
+            const num = parseFloat(text);
+            if(isNaN(num)) return;
+            const suffix = el.textContent.includes('×') ? '×' : '';
+            const obj = {val:0};
+            anime({targets:obj, val:num, duration:1800, delay:i*300, round:1, easing:'easeOutExpo',
+              update:()=>{el.textContent = suffix ? obj.val+suffix : obj.val}
+            });
+          });
+        }
+      }
+    }
+  }
+
+  window.addEventListener('scroll', handleScroll, {passive:true});
+  window.addEventListener('resize', updatePositions, {passive:true});
+  handleScroll(); // Fire on load
+})();
 
 function showEmail(e){e.preventDefault();const t=document.getElementById('email-toast');if(t){t.classList.add('toast-bump');setTimeout(()=>t.classList.remove('toast-bump'),300);return}const d=document.createElement('div');d.id='email-toast';d.innerHTML='Schreiben Sie uns an <strong>main@antruptech.com</strong>';document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('show'));setTimeout(()=>{d.classList.remove('show');setTimeout(()=>d.remove(),400)},4000)}
 </script>
